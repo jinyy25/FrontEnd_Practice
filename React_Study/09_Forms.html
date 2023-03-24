@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+    <div id='root'></div>
+    <!-- <form>
+        <label>
+            name:
+            <input type="text" name="name"/>
+        </label>
+        <input type="submit" value="Submit"/>
+    </form> -->
+
+    <script type="text/babel">
+
+        //1. input text
+        class NameForm extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = {value:''};
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            handleChange(e) {
+                this.setState({value: e.target.value});
+            }
+
+            handleSubmit(e){
+                alert('A name was submitted: ' + this.state.value);
+                e.preventDefault();
+            }
+
+            render(){
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Name:
+                            <input type="text" value={this.state.value} onChange={this.handleChange}/>                            
+                        </label>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                );
+            }
+        }
+
+        //2. textArea
+        class EssayForm extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = {
+                    value: 'Please write an essay about your favorite DOM element.'
+                };
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            handleChange(event){
+                this.setState ({value: event.target.value});
+            }
+
+            handleSubmit(event){
+                alert('An essay was submitted: ' + this.state.value);
+                event.preventDefault();
+            }
+
+            render(){
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Essay:
+                            <textarea value={this.state.value} onChange={this.handleChange}/>                             
+                        </label>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                );
+            }
+        }
+
+        //3. Select
+        class FavorForm extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = { value : 'coconut'};
+
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSubmit = this.handleSubmit.bind(this);
+            }
+
+            handleChange(e){
+                this.setState({value : e.target.value});                
+            }
+
+            handleSubmit(e){
+                alert('Your favorite flavor is: ' + this.state.value);
+                e.preventDefault();
+            }
+
+            render(){
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <label>
+                            Pick your favorite flavor:
+                            <select value={this.state.value} onChange={this.handleChange}>
+                                <option value="grapefrut">Grapefruit</option>
+                                <option value="lime">Lime</option>
+                                <option value="coconut">Coconut</option>
+                                <option value="mango">Mango</option>
+                            </select>
+                        </label>
+                        <input type="submit" value="Submit"/>
+                    </form>
+                );
+            }
+        }
+
+        //4. Handling Multiple Inputs
+        class Reservation extends React.Component {
+            constructor(props){
+                super(props);
+                this.state = {
+                    isGoing: true,
+                    numberOfGuests: 2
+                };
+                
+                this.handleInputChange = 
+                this.handleInputChange.bind(this);
+            }
+
+            handleInputChange(event){
+                const target = event.target;
+                const value = target.type === 'checkbox' ? target.checked : target.value;
+                const name = target.name;
+
+                this.setState({
+                    [name] : value
+                });
+            }
+
+            render(){
+                return (
+                    <form>
+                        <label>
+                            Is going:
+                            <input 
+                                name="isGoing"
+                                type="checkbox"
+                                checked={this.state.isGoing}
+                                onChange={this.handleInputChange}/>
+                        </label>
+                        <br/>
+                        <label>
+                            Number of guests:
+                            <input 
+                                name="numberOfGuests"
+                                type="number"
+                                value={this.state.numberOfGuests}
+                                onChange={this.handleInputChange}/>    
+                        </label>
+                    </form>
+                );
+            }
+        }
+
+
+
+        ReactDOM.render(
+            // <NameForm/>,
+            // document.getElementById('root')
+            // <EssayForm/>,
+            // document.getElementById('root')
+            // <FavorForm/>,
+            // document.getElementById('root')
+            <Reservation/>,
+            document.getElementById('root')
+        );
+
+        //The input is locked at first but becomes editaable after short delay.
+        // ReactDOM.render(<input value="hi"/>,mountNode);        
+        // setTimeout(function(){
+        //     ReactDOM.render(<input value={null}/>, mountNode);
+        // }, 1000);
+    </script>
+</body>
+</html>

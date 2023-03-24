@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        body {color:lightslategrey}
+        h1 { font-size: 18pt; font-weight: bold;}
+        span.label { display: inline-block; width: 50px; color:coral}
+        input { width: 100px;}
+        .msg {font-size: 14pt; font-weight: bold; color:cornflowerblue}
+        th {color: goldenrod; background-color: yellow; padding: 5px 10px;}
+        td {color: aquamarine; background-color: cadetblue; padding: 5px 10px;}
+    </style>
+</head>
+<body ng-app="myapp" ng-init="num=0">
+    <h1>데이터 표시</h1>
+    <p>텍스트를 입력해 주세요</p>
+    <div ng-controller="HelloController as ctl">
+        
+        <div class="input">
+            <span class="label">검색 : </span>
+            <input type="text" ng-model="fstr">
+        </div>
+        <p class="msg">{{ctl.getData()}}</p>
+        <hr/>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Get?</th>
+                <!-- <th>Date</th> -->
+            </tr>
+            
+            <!-- 여러 필터 사용시 : {{변수 | 필터1 | 필터2| ...}} -->
+            <!-- 
+                * short/ shortTime/ shortDate : 짧은 형식의 format
+                * medium/ mediumTime/ mediumDate : 통상적으로 사용되는 형식의 format
+                * longDate/ fullDate : 긴 형식의 날짜 format 
+                * json : 객체의 값을 json 형식으로 반환하여 출력
+                * uppercase/lowercase : 대문자, 소문자 변환 filter
+            -->
+            <!-- 
+                * ng-repeat - Data List 태그 반복출력
+                * obj in ctl.data - ctl.data의 배열 순서로 값을 꺼내 obj에 대입하여 반복 
+                
+                * orderBy:'-price' - price 값이 큰 순으로 정렬
+                * limitTo - 정수
+                * getRepeat - get 값이 true인 것만 표시 
+                
+                * html filter => '|' - pipe: "filter:fstr | orderBy : '-price' " 해당하는 필터 적용하고 재배열
+
+                * Script filter => .filter() : fstr - 텍스트에 fstr 포함 여부 확인하고(필터) 적용 후 재배열 
+            -->
+            <tr ng-repeat="obj in ctl.data | filter:fstr | orderBy : '-price' | getRepeat">
+                <td>{{obj.id}}</td>
+                <td>{{obj.name}}</td>
+                <td>{{obj.price | currency:'₩'}}</td>
+                <td>{{obj.get | getIt}}</td>      
+                <!-- <td>{{obj.get | getIt:'●'}}</td> -->
+                <!-- <td>{{obj.date | date:'yyyy-MM-dd'}}</td> -->
+            </tr>
+        </table>
+    </div>
+    
+    <script>
+        var myapp = angular.module('myapp',[]);
+        var hello = myapp.controller(
+            'HelloController',
+            function(){
+                this.count = 0;
+                this.data = [
+                    // {id:0, name:'no data', price:0, get:false, date:1450100000000},
+                    // {id:1, name:'Galaxy s20', price:7955, get:false, date:1450400000000},
+                    // {id:2, name:'iPhone 13', price:61773, get:true, date:1450200000000},
+                    // {id:3, name:'New Google', price:15112, get:false, date:1450300000000},
+                    // {id:4, name:'New firefox', price:13131, get:false, date:1450300000000},
+                    // {id:5, name:'blackberry Phone', price:14122, get:false, date:1450300000000},
+
+                    { id:0, name:'no data',price:0,get:false }, 
+                    { id:1, name:'Android phone', price:7800, get:true }, 
+                    { id:2, name:'New iPhone', price:549020, get:true }, 
+                    { id:3, name:'windows phone', price:38765, get:true }, 
+                    { id:4, name:'firefox phone', price:14370, get:true }, 
+                    { id:5, name:'blackberry phone', price:-123, get:false },            
+                ];
+                this.getData = function(){
+                    return this.data[this.count].id + ': ' +
+                        this.data[this.count].name + ', ' +
+                        this.data[this.count].price + '. ' ;
+                        // this.data[this.count].price + '.' +
+                        // this.data[this.count].date;
+                };
+            }
+        );
+
+        // custom filter : 컨트롤러.filter(이름, 함수) 
+        // hello.filter(
+        //     'getIt',
+        //     function(){
+        //         return function(val){
+        //             return val ? "✔" : "-";
+        //         };
+        //     } 
+        // );
+
+        //값을 변수로 적용
+        hello.filter(
+            'getIt',
+            function(){
+                return function(val,opt){
+                    var t = (opt == null) ? '✔' : opt;
+                    return val ? t : '-';
+                };
+            }
+        );
+
+        hello.filter(
+            'getRepeat',
+            function(){
+                return function(items){
+                    var res = [];
+                    angular.forEach(items,function(item){
+                        if(item.get)
+                            res.push(item);
+                    });
+                    return res;
+                };
+            }
+        );
+    </script>
+</body>
+</html>

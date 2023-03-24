@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{message}}
+    </div>
+
+    <!-- v-bind : directive 속성 -->
+    <div id="app-2">
+        <span v-bind:title="message">
+            동적 바인딩 된 title
+        </span>
+    </div>
+
+    <div id="app-3">
+        <p v-if="seen"> You can see me</p>
+    </div>
+
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{todo.text}}
+            </li>
+        </ol>
+    </div>
+
+    <div id="app-5">
+        <p>{{message}}</p>
+        <button v-on:click="reverseMessage">turn the message</button>
+    </div>
+
+    <div id="app-6">
+        <p>{{message}}</p>
+        <input v-model="message">
+    </div>
+
+    <div id="app-7">
+        <ol>
+            <!--
+                todo-item에 todo 객체 제공
+                각 항목의 컨텐츠 동적 적용
+                각 구성요소에 키 제공 
+                todo-item component instance 
+            -->
+            <todo-item
+                v-for="item in groceryList" 
+                v-bind:todo="item" 
+                v-bind:key="item.id"
+            ></todo-item>
+        </ol>
+    </div>
+
+    <script>
+        //1. decalre
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'Hello VUE'
+            }
+        })
+
+        //2. v-bind : binding
+        var app2 = new Vue({
+            el: '#app-2',
+            data: {
+                message: 'this page load in' + new Date()  
+            }
+        })
+
+        //3. v-if : condition
+        var app3 = new Vue({
+            el: "#app-3",
+            data: {
+                seen:true
+            }
+        })
+
+        //4. v-for : iteration
+        var app4 = new Vue({
+            el: '#app-4',
+            data: {
+                todos:[
+                    { text: 'learning Angular'},
+                    { text: 'learning react'},
+                    { text: 'learnign vue'}
+                ]
+            } 
+        })
+
+        //5. v-on : handling
+        var app5 = new Vue({
+            el:'#app-5',
+            data: {
+                message: 'Hello Vue!'
+            },
+            methods: {
+                reverseMessage: function(){
+                    this.message = this.message.split('').reverse().join('')
+                }
+            }
+        })
+
+        var app6 = new Vue({
+            el: '#app-6',
+            data: {
+                message: 'hi dude!'
+            }
+        })
+
+        //6. component 
+        Vue.component('todo-item', {
+            props: ['todo'],
+            // template: '<li>just only one content</li>'
+            template: '<li>{{ todo.text }}</li>'
+        })
+
+        var app7 = new Vue({
+            el: '#app-7',
+            data: {
+                groceryList: [
+                    { id: 0, text: 'Vegetables' },
+                    { id: 1, text: 'Cheese' },
+                    { id: 2, text: 'Whatever else humans are supposed to eat'}
+                ]
+            }
+        })
+
+        
+    </script>
+</body>
+</html>

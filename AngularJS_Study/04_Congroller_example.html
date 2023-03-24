@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+
+<body ng-app="myapp" ng-init="num=0">
+    <h1>데이터 표시</h1>
+    <p>ID번호를 입력해 주세요.</p>
+    <div ng-controller="HelloController as ctl">
+        <div class="input">
+            <span class="label">ID:</span>
+            <input type="text" ng-model="num">
+            <!-- ng-click : click처리 -->
+            <button ng-click="ctl.doAction(num)">click</button>
+        </div>
+        <p class="msg">{{ctl.getData()}}</p>
+    </div>
+
+    <script>
+        var myapp = angular.module('myapp',[]);
+        myapp.controller(
+            'HelloController',
+            function(){
+                this.count = 0;
+                // 원본 data
+                this.data = [
+                    [0,'nobody','nop'],
+                    [1,'Hyuk','hyuk@intp'],
+                    [2,'kimddo','kimddo@isfj'],
+                    [3,'jun','jun@esfj']
+                ];
+                // data 얻어오기
+                this.getData = function(){
+                    return this.data[this.count][0] + ': ' +
+                        this.data[this.count][1] + ', ' +
+                        this.data[this.count][2] + '.';
+                };
+                // click action 처리
+                this.doAction = function(num){
+                    this.count = num;
+                }
+            }
+        )
+    </script>
+</body>
+</html>

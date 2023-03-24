@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+    .FancyBorder {
+        padding: 10px 10px;
+        border: 10px solid;
+    }
+
+    .FancyBorder-blue {
+        border-color: blue;
+    }
+
+    .Dialog-title {
+        margin: 0;
+        font-family: sans-serif;
+    }
+
+    .Dialog-message {
+        font-size: larger;
+    }
+    html, body, #root {
+    width: 100%;
+    height: 100%;
+    }
+
+    .SplitPane {
+    width: 100%;
+    height: 100%;
+    }
+
+    .SplitPane-left {
+    float: left;
+    width: 30%;
+    height: 100%;
+    }
+
+    .SplitPane-right {
+    float: left;
+    width: 70%;
+    height: 100%;
+    }
+
+    .Contacts {
+    width: 100%;
+    height: 100%; 
+    background: lightblue;
+    }
+
+    .Chat {
+    width: 100%;
+    height: 100%; 
+    background: pink;
+    }
+    </style>
+</head>
+<body>
+    <div id= 'root'></div>
+    <script type="text/babel">
+
+        //1. Containment
+        function FancyBorder(props){
+            return (
+                <div className = {'FancyBorder FancyBorder-' + props.color}>
+                    {props.children}
+                </div>
+            );
+        }
+        function WelcomeDialog(){
+            return (
+                <FancyBorder color="blue">
+                    <h1 className="Dialog-title">
+                        Welcome
+                    </h1>
+                    <p className="Dialog-message">
+                        Thank you for visiting our spacecraft
+                    </p>
+                </FancyBorder>
+            );
+        }
+        
+        //2. Specialization
+        function Contacts(){
+            return <div className="Contacts"/>;
+        }
+
+        function Chat(){
+            return <div className="Chat"/>;
+        }
+        // muliple 'holes' in a component instead of using children
+        function SplitPane(props){
+            return (
+                <div className="SplitPane">
+                    <div className="SplitPane-left">
+                        {props.left}
+                    </div>
+                    <div className="SplitPane-right">
+                        {props.right}
+                    </div>
+                </div>
+            );
+        }
+        function App(){
+            return (
+                <SplitPane left={<Contacts/>} right={<Chat/>}/>
+            );
+        }
+
+        function Dialog(props){
+            return (
+                <FancyBorder color = "blue">
+                    <h1 className="Dialog-title">
+                        {props.title}
+                    </h1>
+                    <p className="Dialog-message">
+                        {props.message}
+                    </p>
+                    {props.children}
+                </FancyBorder>    
+            );
+        }
+
+        class SignUpDialog extends React.Component {
+            constructor(props){
+                super(props);
+                this.handleChange = this.handleChange.bind(this);
+                this.handleSignUp = this.handleSignUp.bind(this);
+                this.state = {login: ''};
+            }
+            render(){
+                return(
+                    <Dialog title = "Mars Exploration Program" message="How should we refer to you?">
+                        <input value={this.state.login} onChange={this.handleChange}/>
+                        <button onClick={this.handleSignUp}> Sign Me Up!</button>
+                    </Dialog>
+                );
+            }
+            handleChange(e){
+                this.setState({login : e.target.value});            
+            }
+            handleSignUp(e){
+                alert(`Welcome aboard, ${this.state.login}!`);
+            }
+        }
+        function NewWelcomeDialog(){
+            return (
+                <Dialog title="Welcome" message="Thank you for visiting our spacecraft!"/>
+            )
+        }
+
+        ReactDOM.render(
+            // <WelcomeDialog/>,
+            // <App/>,
+            // <NewWelcomeDialog/>,
+            <SignUpDialog/>,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+</html>

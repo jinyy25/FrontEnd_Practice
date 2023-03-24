@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<body>
+
+    <div id="root"></div>
+    <script type="text/babel">
+        const numbers = [1, 2, 3, 4, 5];
+        // const doubled = numbers.map((number) => number * 2);
+        
+        // const listItems = numbers.map((number) => 
+        //     <li key={number.toString}>
+        //         {number}
+        //     </li> 
+        // );
+        // console.log(doubled);
+        
+        //When you don't have stable IDs for rendered items, 
+        //you may use the item index as a key as a last resort
+        // const todoItems = todos.map((todo,index) => 
+        //     // <li key={todo.id}>
+        //     <li key={index}>
+        //         {todo.text}
+        //     </li>
+        // );
+        
+        function ListItem(props){            
+            return <li>{props.value}</li>
+        }
+
+        //Keys only make sense in the context of the surrounding array.
+        function NumberList(props){
+            const numbers = props.numbers;
+            // const listItems = numbers.map((number) => 
+            //     // <li>{number}</li>
+            //     <ListItem key = {number.toString()} value={number}/>
+            // );
+            // return(
+            //     <ul>{listItems} </ul>
+            // );
+            return (
+                <ul>
+                    {numbers.map((number) =>
+                        <ListItem key = {number.toString()} value={number}/>
+                        )}
+                </ul>
+            );
+        }
+            
+
+        ReactDOM.render(
+            // <ul>{listItems}</ul>,
+            <NumberList numbers = {numbers}/>,
+            document.getElementById('root')
+        );    
+    </script>    
+</body>
+</html>

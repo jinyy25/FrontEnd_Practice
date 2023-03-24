@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularTest02</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        #rect {
+            background-color: rebeccapurple;
+            position: absolute;
+        }
+    </style>
+</head>
+<body ng-init="x = 100; y = 100; w = 100; h = 100">
+    <div>
+        x: <input type="number" min ="0" max="300" ng-model="x" size="5">
+        y: <input type="number" min ="0" max="300" ng-model="y" size="5">
+        w: <input type="number" min ="0" max="300" ng-model="w" size="5">
+        h: <input type="number" min ="0" max="300" ng-model="h" size="5">
+    </div>
+    <div id="rect" style="left:{{x}}px; top:{{y}}px; width:{{w}}px; height:{{h}}px">   
+    </div>
+</body>
+</html>

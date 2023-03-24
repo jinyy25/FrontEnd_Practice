@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body>
+    <!-- <div ng-app="">
+        <p>Name : <input type="text" ng-model="name"></p>
+        <h1>Hello {{name}}</h1>
+    </div> -->
+    <!-- <div ng-app="myApp" ng-controller="myCtrl">
+        {{ hello }}
+    </div> -->
+
+    <div ng-app="myApp" ng-controller="myCtrl">
+        <form ng-submit="addBoard()">
+            Title : <input type="text" ng-model="boardForm.title" autofocus> <br/>
+            Name : <input type="text" ng-model="boardForm.writer"> </br>
+            <button type="submit">Add</button>
+        </form>
+        <table border="1">
+            <tr>
+                <td style="width: 50px">No.</td>   
+                <td style="width: 200px;">Title</td>                   
+                <td style="width: 50px;">Name</td>   
+            </tr>
+            <tr ng-repeat="item in boardList">
+                <td style="width: 50px">{{$index+1}}</td>   
+                <td style="width: 200px;">{{item.title}}</td>                   
+                <td style="width: 50px;">{{item.writer}}</td>   
+                <td style="width: 50px;"><button type="button" ng-click="remove(item.id)">삭제</button></td>
+            </tr>            
+        </table>
+    </div>
+    <script>
+        var app = angular.module("myApp",[]);
+        // app.controller("myCtrl",function($scope){
+        //     $scope.hello = "Hello World";
+        // });
+        app.controller("myCtrl",function($scope){
+            $scope.boardList = [
+                {id: 1, title: 'Title1', writer: 'Writer1'},
+                {id: 2, title: 'Title2', writer: 'Writer2'}
+            ];
+
+            $scope.remove = function(id){
+                if(!id) return;
+                var idx = -1;
+                for(var i = 0; i < $scope.boardList.length;i++){
+                    if($scope.boardList[i].id === id){
+                        idx = i;
+                        break;
+                    }
+                }
+                if(idx === -1) return;
+                $scope.boardList.splice(idx,1);     //id값 일치시 splice : boardlist에서 배열 삭제 (idx 부터 1개)
+            }
+            
+            $scope.boardForm = {};
+
+            $scope.addBoard = function(){
+                var newId =! $scope.boardList.length ? 1 : $scope.boardList[$scope.boardList.length-1].id + 1;
+                var newItem = {
+                    id: newId,
+                    title: $scope.boardForm.title,
+                    writer: $scope.boardForm.writer
+                };
+                $scope.boardList.push(newItem);     //newItem boardList에 추가
+            }
+        });
+    </script>
+</body>
+</html>

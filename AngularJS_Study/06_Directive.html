@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        body { color: darkcyan;}
+        h1 { font-size: 18pt; font-weight: bold;}
+    </style>
+</head>
+<body ng-app="myapp" ng-init="num=0">
+   <!-- 
+        Driective: HTML 태그에 고유한 속성을 추가하고, 
+        tag를 작성하여, HTML 안에 특수한 기능을 할당 
+        
+        모듈.directive(이름, 함수);
+    -->
+    <h1>Directive</h1>
+    <ok> This is sample -! </ok>
+    <hr>
+    <ok size="36pt"> This is size sample :)</ok>
+    <ok color="mediumspringgreen"> This is color sample :)</ok>
+    <ok color="green" size="48pt"> This is full scale :)</ok>
+
+    <click>This is click sample -!</click>
+
+    <div gotit="large"> Large </div>
+    <div gotit="midium"> Midium </div>
+    <div gotit="small"> Small </div>
+
+
+    <script>
+        var myapp = angular.module('myapp',[]);
+
+        // directive : ok tag에 기능 생성
+        // * scope : 범위의 객체
+        // * element : DOM 요소
+        // * attrs : 속성 정보를 취급하는 객체
+        myapp.directive(
+            'ok', function(){
+            // return {
+            //     template:'<span style="font-size:24pt;color:red;">OK!</span>'
+            // };
+
+            //ok 태그에 size,color,txt,tag 속성지정
+            return function(scope,element,attrs){
+                var size = attrs['size']; 
+                size = size == null ? '24pt' : size;
+
+                var color = attrs['color'];
+                color = color == null ? 'yellowgreen' : color;
+
+                var txt = element[0].textContent;
+                var tag = '<span style="font-size:' + size + ';color:' + color + ';">' + txt + '</span>';
+            
+                element[0].innerHTML = tag;
+            };   
+        });
+
+        myapp.directive(
+            'click', function(){
+            return function(scope, element, attrs){
+                    element[0].addEventListener("click", function(){
+                        var txt = this.textContent;
+                        alert('you click"' + txt + '"!');
+                    }, false);
+            };
+        });
+
+        // directive restrict : directive가 어디에 사용할 수 있는지 나타냄
+        // E : 요소로 사용 가능 <ok>와 같은 형태
+        // A : 속성으로 사용 가능 <p ok>와 같은 형태
+        // AE : 위 모두 사용 가능
+        myapp.directive(
+            'gotit', function(){
+                return {
+                    restrict : 'A',         //속성으로 사용할 directive
+                    template : function(scope, element){
+                        var size = 24;
+                        switch(element['gotit']){
+                            case 'large':
+                                size = 48; break;
+                            case 'medium':
+                                size = 36; break;
+                            case 'small':
+                                size = 24; break;                             
+                        }
+                        var obj = scope[0];
+                        var tag = '<span style ="font-size:' + size 
+                            + 'pt">' + scope[0].textContent
+                            + '</span>';
+                            return tag;
+                    }
+                };
+            });
+    </script>
+</body>
+</html>

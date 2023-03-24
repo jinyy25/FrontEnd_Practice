@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AngularTest03</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        body{ color : lightcoral;}
+        h1{ font-size: 18px; font-weight: bold;}
+        span.label{ display: inline-block; width: 50px; color:lightgreen;}
+        input { width: 100px;}
+        .msg{ font-size: 14px;font-weight: bold; color:lightseagreen}
+    </style>
+</head>
+
+
+<!-- ng-app : 해당 태그에 AngularJS 기능 할당 -->
+<body ng-app="myapp" ng-init="num = 1000">
+    <h1>세금 계산</h1>
+    <p>금액을 입력 하세요</p>
+
+    <!-- ng-controller: 해당 명칭을 controller로 설정-->
+    <div ng-controller= "HelloController as ctl">
+        <div class="input">
+            <span class="label">tax:</span>
+            <input type="text" ng-model="ctl.tax">%
+        </div>
+        <div class="input">
+            <span class="label">price:</span>
+            <input type="text" ng-model="num">원
+        </div>
+        
+        <!-- ctl controller elements 의 값을 가져옴 -->
+        <p class="msg">세금 포함 : {{ctl.calcWithTax(num)}}원</p>
+        <p class="msg">부가세 제외 : {{ctl.calcWithoutTax(num)}}원</p>
+        <!-- <p class="msg">{{ctl.getData()}}</p> -->
+    </div>
+
+    <script>
+        angular.module('myapp',[])      //Angular module의 controller
+            .controller(
+            'HelloController',          //이름영역
+            function(){                 //함수영역
+                this.tax = 8;
+                this.calcWithTax = function(val){            
+                    return Math.floor(val * (100 + this.tax * 1)/100);
+                };
+
+                this.calcWithoutTax = function(val){
+                    return Math.floor(val/(100 + this.tax * 1) * 100);
+                };
+        }
+    );
+    </script>
+</body>
+</html>
