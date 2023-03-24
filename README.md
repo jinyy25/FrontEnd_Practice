@@ -1,2 +1,2 @@
 # FrontEnd_Practice
-Angualr . React . Vue Tutorial
+Angular . React . Vue Tutorial
